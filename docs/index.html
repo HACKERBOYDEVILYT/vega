@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vega Analytics | Collaborative Visual Data Exploration</title>
+  <!-- Vega & Vega-Lite Runtime -->
+  <script src="https://cdn.jsdelivr.net/npm/vega@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-lite@5"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vega-embed@6"></script>
+  <style>
+    :root {
+      --bg: #0b0f19;
+      --surface: #111827;
+      --surface-variant: #1e293b;
+      --border: #334155;
+      --cyan: #06b6d4;
+      --violet: #8b5cf6;
+      --emerald: #10b981;
+      --amber: #f59e0b;
+      --rose: #f43f5e;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      padding: 20px;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+    }
+    .header {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      background: rgba(6, 182, 212, 0.15);
+      border: 1px solid var(--cyan);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      color: var(--cyan);
+      font-size: 20px;
+    }
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+    .kpi-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 16px;
+    }
+    .kpi-title { font-size: 13px; color: var(--text-muted); margin-bottom: 4px; }
+    .kpi-value { font-size: 24px; font-weight: 700; color: var(--text); }
+    .chart-container {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .controls {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .btn {
+      background: var(--surface-variant);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 13px;
+      transition: all 0.2s;
+    }
+    .btn:hover, .btn.active {
+      background: var(--cyan);
+      color: #001f29;
+      border-color: var(--cyan);
+      font-weight: 600;
+    }
+    #vis {
+      width: 100%;
+      min-height: 380px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .semver-badge {
+      background: rgba(139, 92, 246, 0.15);
+      border: 1px solid var(--violet);
+      color: var(--violet);
+      padding: 4px 10px;
+      border-radius: 8px;
+      font-family: monospace;
+      font-size: 13px;
+    }
+    .download-badge {
+      background: var(--cyan);
+      color: #001f29;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+    }
+    .footer {
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-muted);
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="brand">
+        <div class="brand-icon">V</div>
+        <div>
+          <h1 style="font-size: 20px; display:flex; align-items:center; gap:8px;">
+            Vega Analytics
+            <span style="display:inline-block; width:8px; height:8px; background:var(--emerald); border-radius:50%; box-shadow:0 0 8px var(--emerald);"></span>
+          </h1>
+          <p style="font-size: 13px; color: var(--text-muted);">Executive Visual Exploration & Real-Time Workspace</p>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 12px;">
+        <span class="semver-badge">Release v1.2.0</span>
+        <a href="https://github.com" class="download-badge">Download Android APK</a>
+      </div>
+    </div>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-title">Average Edge Latency</div>
+        <div class="kpi-value" style="color: var(--cyan);">92.4 ms</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Peak Throughput</div>
+        <div class="kpi-value" style="color: var(--violet);">184.2k req/s</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Active Edge Nodes</div>
+        <div class="kpi-value" style="color: var(--emerald);">12 Global</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-title">Real-Time Sync</div>
+        <div class="kpi-value" style="color: var(--amber);">Synchronized</div>
+      </div>
+    </div>
+
+    <div class="chart-container">
+      <div class="controls">
+        <button class="btn active" onclick="switchMark('circle')">Scatter Plot</button>
+        <button class="btn" onclick="switchMark('bar')">Bar Matrix</button>
+        <button class="btn" onclick="switchMark('line')">Line Trajectory</button>
+        <button class="btn" onclick="switchMark('area')">Area Trend</button>
+      </div>
+
+      <div id="vis"></div>
+    </div>
+
+    <div class="footer">
+      Vega Analytics Cloud Application • Hosted via GitHub Pages & GitHub Releases
+    </div>
+  </div>
+
+  <script>
+    const records = [
+      { node: "us-east-1a", region: "US East", latency_ms: 34.2, throughput_k: 142.0, cpu_load: 68.4 },
+      { node: "us-east-1b", region: "US East", latency_ms: 38.6, throughput_k: 125.0, cpu_load: 74.1 },
+      { node: "us-west-2a", region: "US West", latency_ms: 58.1, throughput_k: 98.4, cpu_load: 52.0 },
+      { node: "us-west-2b", region: "US West", latency_ms: 62.4, throughput_k: 88.0, cpu_load: 61.2 },
+      { node: "eu-central-1", region: "Europe", latency_ms: 82.5, throughput_k: 184.2, cpu_load: 82.7 },
+      { node: "eu-west-1", region: "Europe", latency_ms: 76.8, throughput_k: 164.0, cpu_load: 71.9 },
+      { node: "ap-south-1", region: "Asia Pac", latency_ms: 134.0, throughput_k: 112.5, cpu_load: 89.4 },
+      { node: "ap-southeast-1", region: "Asia Pac", latency_ms: 118.2, throughput_k: 130.0, cpu_load: 79.8 },
+      { node: "ap-northeast-1", region: "Asia Pac", latency_ms: 104.5, throughput_k: 145.8, cpu_load: 64.2 },
+      { node: "sa-east-1", region: "South America", latency_ms: 158.4, throughput_k: 64.0, cpu_load: 58.3 }
+    ];
+
+    let currentMark = 'circle';
+
+    function renderChart(mark) {
+      const spec = {
+        "${'$'}schema": "https://vega.github.io/schema/vega-lite/v5.json",
+        "description": "Global Telemetry Spec",
+        "data": { "values": records },
+        "background": "transparent",
+        "mark": { "type": mark, "tooltip": true },
+        "encoding": {
+          "x": { "field": "latency_ms", "type": "quantitative", "title": "Latency (ms)" },
+          "y": { "field": "throughput_k", "type": "quantitative", "title": "Throughput (k req/s)" },
+          "color": { "field": "region", "type": "nominal", "scale": { "range": ["#06b6d4", "#8b5cf6", "#10b981", "#f59e0b", "#f43f5e"] } },
+          "size": { "field": "cpu_load", "type": "quantitative", "scale": { "range": [60, 400] } }
+        },
+        "config": {
+          "axis": { "domainColor": "#334155", "gridColor": "#1e293b", "labelColor": "#94a3b8", "titleColor": "#06b6d4" },
+          "view": { "stroke": "transparent" }
+        },
+        "width": "container",
+        "height": 340
+      };
+
+      vegaEmbed('#vis', spec, { actions: false });
+    }
+
+    function switchMark(mark) {
+      document.querySelectorAll('.btn').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      renderChart(mark);
+    }
+
+    renderChart('circle');
+  </script>
+</body>
+</html>

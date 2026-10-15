@@ -1,0 +1,6 @@
+{
+  "name": "Vega Analytics",
+  "description": "Executive visual exploration environment for interactive data analysis, real-time collaborative workspaces, and semantic versioning.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
